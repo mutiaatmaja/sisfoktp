@@ -2,6 +2,15 @@
 
 @section('content')
 <div class="container mx-auto p-4">
+    @if ($errors->any())
+        <div class="mb-4 p-3 bg-red-100 text-red-800 rounded border border-red-300">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <h2 class="text-xl font-bold mb-4">Edit Murid</h2>
     <form action="{{ route('murid.update', $murid) }}" method="POST" enctype="multipart/form-data">
         @csrf

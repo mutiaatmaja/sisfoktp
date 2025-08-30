@@ -21,10 +21,11 @@ class MuridRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('murid')?->id;
         return [
-            'nisn' => 'required|string|unique:murids,nisn',
-            'nis' => 'required|string|unique:murids,nis',
-            'nik' => 'required|string|unique:murids,nik',
+            'nisn' => 'required|string|unique:murids,nisn' . ($id ? ',' . $id : ''),
+            'nis' => 'required|string|unique:murids,nis' . ($id ? ',' . $id : ''),
+            'nik' => 'required|string|unique:murids,nik' . ($id ? ',' . $id : ''),
             'nama' => 'required|string',
             'tempat_lahir' => 'required|string',
             'tanggal_lahir' => 'required|date',
