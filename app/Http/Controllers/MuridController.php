@@ -8,6 +8,27 @@ use Illuminate\Support\Str;
 
 class MuridController extends Controller
 {
+    /**
+     * Simpan foto murid dari kamera (base64)
+     */
+    public function updateFotoCamera(Request $request, Murid $murid)
+    {
+        $request->validate([
+            'foto_camera' => 'required|string',
+        ]);
+        $base64 = $request->foto_camera;
+        if (preg_match('/^data:image\/(png|jpeg|jpg);base64,/', $base64)) {
+            $base64 = substr($base64, strpos($base64, ',') + 1);
+            $base64 = base64_decode($base64);
+            $filename = $murid->uuid . '.png';
+            $path = storage_path('app/public/foto-murid/' . $filename);
+            file_put_contents($path, $base64);
+            $murid->foto = $filename;
+            $murid->save();
+            return response()->json(['success' => true, 'foto' => $filename]);
+        }
+        return response()->json(['success' => false, 'message' => 'Format foto tidak valid'], 400);
+    }
     // ...existing code...
     /**
      * Display a listing of the resource.
@@ -53,7 +74,7 @@ class MuridController extends Controller
     public function show(Murid $murid)
     {
         $murid->load(['kelas', 'jurusan']);
-        return new \App\Http\Resources\MuridResource($murid);
+        return view('murid.show', compact('murid'));
     }
 
     /**
@@ -79,6 +100,18 @@ class MuridController extends Controller
             $backupName = $data['nisn'] . '-' . $murid->uuid . '.' . $foto->getClientOriginalExtension();
             $foto->storeAs('public/backup-foto-murid', $backupName);
             $data['foto'] = $fotoName;
+        }
+        // Jika ada input foto_camera (base64), simpan ke storage
+        if ($request->filled('foto_camera')) {
+            $base64 = $request->foto_camera;
+            if (preg_match('/^data:image\/(png|jpeg|jpg);base64,/', $base64)) {
+                $base64 = substr($base64, strpos($base64, ',') + 1);
+                $base64 = base64_decode($base64);
+                $fotoName = $murid->uuid . '.png';
+                $path = storage_path('app/public/public/foto-murid/' . $fotoName);
+                file_put_contents($path, $base64);
+                $data['foto'] = $fotoName;
+            }
         }
         $murid->update($data);
         return redirect()->route('murid.index')->with('success', 'Murid berhasil diupdate');
@@ -114,7 +147,7 @@ class MuridController extends Controller
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
             ->loadView('murid.pdf', compact('murids', 'jurusan'))
             ->setPaper('a4', 'landscape');
-        return $pdf->download('data-murid.pdf');
+        return $pdf->stream('data-murid.pdf');
     }
     /**
      * Cetak PDF murid berdasarkan jurusan
@@ -123,10 +156,21 @@ class MuridController extends Controller
     {
         $murids = \App\Models\Murid::with(['kelas', 'jurusan'])->where('jurusan_id', $jurusan_id)->get();
         $jurusan = \App\Models\Jurusan::find($jurusan_id);
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-            ->loadView('murid.pdf', compact('murids', 'jurusan'))
-            ->setPaper('a4', 'landscape');
-        $filename = 'murid-jurusan-' . ($jurusan ? $jurusan->kode : 'unknown') . '.pdf';
-        return $pdf->download($filename);
+        // $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+        //     ->loadView('murid.pdf', compact('murids', 'jurusan'))
+        //     ->getDomPDF()
+        //     ->setHttpContext(
+        //     stream_context_create([
+        //         'ssl' => [
+        //             'allow_self_signed' => TRUE,
+        //             'verify_peer' => FALSE,
+        //             'verify_peer_name' => FALSE,
+        //         ]
+        //     ])
+        //     )
+        //     ->setPaper('a4', 'landscape');
+        // $filename = 'murid-jurusan-' . ($jurusan ? $jurusan->kode : 'unknown') . '.pdf';
+        // return $pdf->stream($filename);
+        return view('murid.nopdf', compact('murids', 'jurusan'));
     }
 }

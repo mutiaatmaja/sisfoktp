@@ -26,7 +26,7 @@
                 <td class="border px-4 py-2">{{ $murid->jurusan->nama ?? '-' }}</td>
                 <td class="border px-4 py-2">
                     @if($murid->foto)
-                        <img src="{{ asset('storage/foto-murid/'.$murid->foto) }}" alt="Foto" class="h-12 w-12 object-cover rounded-full">
+                        <img src="{{ asset('storage/public/foto-murid/'.$murid->foto) }}"  class="h-12 w-12 object-cover rounded-full">
                     @else
                         -
                     @endif

@@ -57,8 +57,52 @@
         </div>
         <div class="mb-4">
             <label class="block mb-1">Foto</label>
-            <input type="file" name="foto" class="border px-4 py-2 w-full">
+            <div class="flex items-center gap-4">
+                <img id="foto-preview" src="https://ui-avatars.com/api/?name=Foto+Murid&size=128" alt="Foto" class="h-20 w-20 object-cover rounded-full border">
+                <input type="file" name="foto" accept="image/*" class="border px-4 py-2 w-full" onchange="previewFoto(event)">
+            </div>
+            <button type="button" onclick="openCamera()" class="mt-2 bg-green-600 text-white px-3 py-1 rounded">Ambil Foto Kamera</button>
+            <div id="camera-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+                <div class="bg-white p-4 rounded shadow-lg">
+                    <video id="video" width="320" height="240" autoplay class="mb-2"></video>
+                    <br>
+                    <button type="button" onclick="captureFoto()" class="bg-blue-600 text-white px-3 py-1 rounded">Capture</button>
+                    <button type="button" onclick="closeCamera()" class="bg-gray-400 text-white px-3 py-1 rounded ml-2">Tutup</button>
+                    <canvas id="canvas" width="320" height="240" class="hidden"></canvas>
+                </div>
+            </div>
+            <input type="hidden" name="foto_camera" id="foto_camera">
         </div>
+        <script>
+        function previewFoto(event) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('foto-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+        let stream;
+        function openCamera() {
+            document.getElementById('camera-modal').classList.remove('hidden');
+            navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
+                stream = s;
+                document.getElementById('video').srcObject = stream;
+            });
+        }
+        function closeCamera() {
+            document.getElementById('camera-modal').classList.add('hidden');
+            if(stream) stream.getTracks().forEach(t => t.stop());
+        }
+        function captureFoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/png');
+            document.getElementById('foto-preview').src = dataUrl;
+            document.getElementById('foto_camera').value = dataUrl;
+            closeCamera();
+        }
+        </script>
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Simpan</button>
         <a href="{{ route('murid.index') }}" class="ml-2">Batal</a>
     </form>

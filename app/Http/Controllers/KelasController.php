@@ -25,11 +25,22 @@ class KelasController extends Controller
         $kelas = \App\Models\Kelas::findOrFail($id);
         $murids = \App\Models\Murid::with('jurusan')->where('kelas_id', $id)->get();
         $jurusan = null;
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
-            ->loadView('murid.pdf', compact('murids', 'jurusan', 'kelas'))
-            ->setPaper('a4', 'landscape');
-        $filename = 'siswa-kelas-' . $kelas->nama . '.pdf';
-        return $pdf->download($filename);
+        // $pdf = \Barryvdh\DomPDF\Facade\Pdf::setOptions(['isHtml5ParserEnabled' => true, 'isRemoteEnabled' => true])
+        //     ->loadView('murid.pdf', compact('murids', 'jurusan', 'kelas'))
+        //     ->getDomPDF()
+        //     ->setHttpContext(
+        //         stream_context_create([
+        //             'ssl' => [
+        //                 'allow_self_signed' => true,
+        //                 'verify_peer' => false,
+        //                 'verify_peer_name' => false,
+        //             ],
+        //         ]),
+        //     )
+        //     ->setPaper('a4', 'landscape');
+        // $filename = 'siswa-kelas-' . $kelas->nama . '.pdf';
+        // return $pdf->stream($filename);
+        return view('murid.nopdf', compact('murids', 'jurusan', 'kelas'));
     }
     /**
      * Display a listing of the resource.

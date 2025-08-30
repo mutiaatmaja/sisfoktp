@@ -36,17 +36,18 @@
                 <td class="border px-4 py-2">{{ $murid->jurusan->nama ?? '-' }}</td>
                 <td class="border px-4 py-2">
                     @if($murid->foto)
-                        <img src="{{ asset('storage/foto-murid/'.$murid->foto) }}" alt="Foto" class="h-12 w-12 object-cover rounded-full">
+                        <img src="{{ asset('storage/public/foto-murid/'.$murid->foto) }}" alt="Foto" class="h-12 w-12 object-cover rounded-full">
                     @else
                         -
                     @endif
                 </td>
                 <td class="border px-4 py-2">
-                    <a href="{{ route('murid.edit', $murid) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded">Edit</a>
+                    <a href="{{ route('murid.show', $murid) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded">Lihat</a>
+                    <a href="{{ route('murid.edit', $murid) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded ml-1">Edit</a>
                     <form action="{{ route('murid.destroy', $murid) }}" method="POST" class="inline">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded" onclick="return confirm('Yakin hapus?')">Hapus</button>
+                        <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded ml-1" onclick="return confirm('Yakin hapus?')">Hapus</button>
                     </form>
                 </td>
             </tr>
