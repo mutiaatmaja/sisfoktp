@@ -7,8 +7,20 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+use App\Models\Kelas;
+use App\Models\Murid;
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $kelasList = Kelas::all();
+    $muridTanpaFoto = [];
+    foreach ($kelasList as $kelas) {
+        $jumlah = Murid::where('kelas_id', $kelas->id)->where(function($q){ $q->whereNull('foto')->orWhere('foto',''); })->count();
+        $muridTanpaFoto[] = [
+            'id' => $kelas->id,
+            'kelas' => $kelas->nama,
+            'jumlah' => $jumlah
+        ];
+    }
+    return view('dashboard', compact('muridTanpaFoto'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
