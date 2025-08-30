@@ -18,10 +18,10 @@ class ProfileController extends Controller
         return view('profile');
     }
 
-    // Update profil dan password
+    // Update profil dan password sekaligus
     public function update(Request $request)
     {
-    $user = Auth::user();
+        $user = \App\Models\User::find(Auth::id());
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
