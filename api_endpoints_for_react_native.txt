@@ -1,0 +1,42 @@
+# Daftar Endpoint API Laravel untuk React Native
+
+## Auth
+- POST /login
+- POST /logout
+- POST /register
+
+## Jurusan
+- GET /jurusan
+- GET /jurusan/{id}
+- POST /jurusan
+- PUT /jurusan/{id}
+- DELETE /jurusan/{id}
+
+## Kelas
+- GET /kelas
+- GET /kelas/{id}
+- POST /kelas
+- PUT /kelas/{id}
+- DELETE /kelas/{id}
+
+## Murid
+- GET /murid
+- GET /murid/{id}
+- POST /murid
+- PUT /murid/{id}
+- DELETE /murid/{id}
+- POST /murid/import-excel
+- GET /murid-cetak-pdf
+
+## Upload Foto Murid
+- POST /murid (field foto, bisa upload dari kamera atau file)
+- PUT /murid/{id} (field foto, bisa upload dari kamera atau file)
+
+## Relasi
+- Field kelas_id dan jurusan_id pada murid
+
+## Format Response
+- Semua response menggunakan resource (JSON rapi)
+
+## Catatan
+- Semua endpoint menggunakan middleware auth (hanya user login yang bisa akses)
