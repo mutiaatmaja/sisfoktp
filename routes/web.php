@@ -27,9 +27,8 @@ Route::middleware('auth')->group(function () {
     Route::get('kelas/rombel', [App\Http\Controllers\KelasController::class, 'rombel'])->name('kelas.rombel');
     Route::get('kelas/{id}/siswa', [App\Http\Controllers\KelasController::class, 'siswa'])->name('kelas.siswa');
     Route::get('kelas/{id}/cetak-pdf', [App\Http\Controllers\KelasController::class, 'cetakPdf'])->name('kelas.cetakPdf');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
 
     Route::resource('jurusan', App\Http\Controllers\JurusanController::class);
     Route::resource('kelas', App\Http\Controllers\KelasController::class);
