@@ -47,7 +47,7 @@
                     <td>{{ $murid->jurusan->nama ?? '-' }}</td>
                     <td>
                         @if($murid->foto)
-                            <img src="{{ asset('app/public/public/foto-murid/'.$murid->foto) }}" class="foto-murid">
+                            <img src="{{ asset('storage/public/foto-murid/'.$murid->foto) }}" class="foto-murid">
                         @else
                             -
                         @endif
