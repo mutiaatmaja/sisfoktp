@@ -3,7 +3,6 @@
 ## Auth
 - POST /login
 - POST /logout
-- POST /register
 
 ## Jurusan
 - GET /jurusan
@@ -29,8 +28,8 @@
 - GET /murid-cetak-pdf
 
 ## Upload Foto Murid
-- POST /murid (field foto, bisa upload dari kamera atau file)
-- PUT /murid/{id} (field foto, bisa upload dari kamera atau file)
+- POST /murid (field foto, bisa upload dari kamera atau file, atau field foto_camera berupa base64 dari kamera HP)
+- PUT /murid/{id} (field foto, bisa upload dari kamera atau file, atau field foto_camera berupa base64 dari kamera HP)
 
 ## Relasi
 - Field kelas_id dan jurusan_id pada murid
