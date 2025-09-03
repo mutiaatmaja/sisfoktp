@@ -7,8 +7,8 @@
             <div class="flex-shrink-0 flex flex-col items-center">
 
                 @php
-                    $fotoPath = public_path('storage/foto-murid/' . $murid->foto);
-                    $fotoUrl = asset('storage/foto-murid/' . $murid->foto);
+                    $fotoPath = public_path('storage/public/foto-murid/' . $murid->foto);
+                    $fotoUrl = asset('storage/public/foto-murid/' . $murid->foto);
                     $version = file_exists($fotoPath) ? filemtime($fotoPath) : time();
                 @endphp
 
