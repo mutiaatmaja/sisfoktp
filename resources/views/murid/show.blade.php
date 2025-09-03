@@ -6,11 +6,17 @@
         <div class="bg-white shadow rounded-lg p-6 flex flex-col md:flex-row gap-6">
             <div class="flex-shrink-0 flex flex-col items-center">
 
+                @php
+                    $fotoPath = public_path('storage/foto-murid/' . $murid->foto);
+                    $version = file_exists($fotoPath) ? filemtime($fotoPath) : time();
+                @endphp
+
                 <img src="{{ $murid->foto
-                    ? Storage::url('public/foto-murid/' . $murid->foto) . '?v=' . time()
+                    ? asset('storage/foto-murid/' . $murid->foto) . '?v=' . $version
                     : 'https://ui-avatars.com/api/?name=' . urlencode($murid->nama) . '&size=128' }}"
                     alt="Foto"
                     style="width:112px;height:168px;object-fit:cover;border-radius:8px;border:2px solid #ccc;margin-bottom:1rem;">
+
 
                 <span class="font-semibold text-lg">{{ $murid->nama }}</span>
                 <span class="text-sm text-gray-500">{{ $murid->nisn }}</span>
