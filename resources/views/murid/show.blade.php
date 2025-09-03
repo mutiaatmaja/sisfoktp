@@ -6,7 +6,7 @@
         <div class="bg-white shadow rounded-lg p-6 flex flex-col md:flex-row gap-6">
             <div class="flex-shrink-0 flex flex-col items-center">
 
-                <img src="{{ $murid->foto ? asset('storage/public/foto-murid/' . $murid->foto) : 'https://ui-avatars.com/api/?name=' . urlencode($murid->nama) . '&size=128' }}"
+                <img src="{{ $murid->foto ? asset('storage/public/foto-murid/' . $murid->foto) . '?v=' . $murid->updated_at->timestamp : 'https://ui-avatars.com/api/?name=' . urlencode($murid->nama) . '&size=128' }}"
                     alt="Foto"
                     style="width:112px;height:168px;object-fit:cover;border-radius:8px;border:2px solid #ccc;margin-bottom:1rem;">
                 <span class="font-semibold text-lg">{{ $murid->nama }}</span>
