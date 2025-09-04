@@ -69,7 +69,7 @@
             <label class="block mb-1">Foto</label>
             <div class="flex items-center gap-4">
                 <img id="foto-preview" src="{{ $murid->foto ? asset('storage/public/foto-murid/'.$murid->foto) : 'https://ui-avatars.com/api/?name=Foto+Murid&size=128' }}" alt="Foto" class="h-20 w-20 object-cover rounded-full border">
-                <input type="file" name="foto" accept="image/*" class="border px-4 py-2 w-full" onchange="previewFoto(event)">
+                <input type="file" id="user" capture='user' name="foto" accept="image/*" class="border px-4 py-2 w-full" onchange="previewFoto(event)">
             </div>
             <button type="button" onclick="openCamera()" class="mt-2 bg-green-600 text-white px-3 py-1 rounded">Ambil Foto Kamera</button>
             <div id="camera-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
